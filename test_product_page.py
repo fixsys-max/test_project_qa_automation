@@ -1,5 +1,6 @@
 import pytest
 from .pages.product_page import ProductPage
+from .pages.basket_page import BasketPage
 
 links_list = ["http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer0",
               "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer1",
@@ -14,7 +15,6 @@ links_list = ["http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_20
               "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer9"]
 
 
-@pytest.mark.skip
 @pytest.mark.parametrize('link', links_list)
 def test_guest_can_add_product_to_basket(browser, link):
     # link = 'http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=newYear2019'
@@ -63,3 +63,14 @@ def test_guest_can_go_to_login_page_from_product_page(browser):
     page = ProductPage(browser, link)
     page.open()
     page.go_to_login_page()
+
+
+@pytest.mark.new
+def test_guest_cant_see_product_in_basket_opened_from_product_page(browser):
+    link = 'http://selenium1py.pythonanywhere.com/ru/catalogue/the-shellcoders-handbook_209/'
+    page = ProductPage(browser, link)
+    page.open()
+    page.go_to_basket()
+    basket_page = BasketPage(browser, browser.current_url)
+    basket_page.should_not_be_items_in_basket()
+    basket_page.empty_message_is_present()

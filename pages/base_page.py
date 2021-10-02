@@ -22,7 +22,10 @@ class BasePage:
     def go_to_login_page(self):
         login_link = self.browser.find_element(*BasePageLocators.LOGIN_LINK)
         login_link.click()
-        # return LoginPage(browser=self.browser, url=self.browser.current_url)
+
+    def go_to_basket(self):
+        basket_link = self.browser.find_element(*BasePageLocators.BASKET_LINK)
+        basket_link.click()
 
     # предстален ли элемент на странице
     def is_element_present(self, how, what):
