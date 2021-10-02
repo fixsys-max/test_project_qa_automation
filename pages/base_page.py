@@ -2,6 +2,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 from selenium.common.exceptions import NoSuchElementException
+from .locators import BasePageLocators
 # Импорт для метода тестового проекта
 from selenium.common.exceptions import NoAlertPresentException
 import math
@@ -16,6 +17,12 @@ class BasePage:
     # открытие браузера
     def open(self):
         self.browser.get(self.url)
+
+    # переход на страницу логина
+    def go_to_login_page(self):
+        login_link = self.browser.find_element(*BasePageLocators.LOGIN_LINK)
+        login_link.click()
+        # return LoginPage(browser=self.browser, url=self.browser.current_url)
 
     # предстален ли элемент на странице
     def is_element_present(self, how, what):
@@ -42,7 +49,11 @@ class BasePage:
             return False
         return True
 
-    # Медод для тестового проекта, который вычисляет задание в алерт-месседже
+    # присутствует ли ссылка на страницу логина
+    def should_be_login_link(self):
+        assert self.is_element_present(*BasePageLocators.LOGIN_LINK), 'Login link is not presented'
+
+    # Медод для тестового проекта, который вычисляет задание в алерте
     def solve_quiz_and_get_code(self):
         alert = self.browser.switch_to.alert
         x = alert.text.split(" ")[2]
